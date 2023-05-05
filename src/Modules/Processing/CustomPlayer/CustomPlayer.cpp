@@ -1,5 +1,4 @@
 #include "CustomPlayer.h"
-
 CustomPlayer::CustomPlayer(int index, QThreadPool* threadPool) : Processing(index, threadPool) {
 }
 
@@ -39,6 +38,20 @@ void CustomPlayer::exec() {
   }
 
   // TODO: here...
+  
+ if(frame->has_ball()){
+    if(robot->id() == 3){
+      
+      SSLMotion::GoToPoint gotopoint(QPointF(frame->ball().x(),frame->ball().y() ),
+                                (frame->ball() - robot->position()).angle(),
+                                true);
+      auto command = sslNavigation.run(robot.value() ,
+      SSLRobotCommand(gotopoint));
+      emit sendCommand(command);
+                                              // O Behaivor escolhe o robô com id 3 para ir atrás da bola em toda arena
+                                              // através de gotopoint segue as coordenadas da bola
+    }
+  }
   // emit sendCommand(...);
 }
 
